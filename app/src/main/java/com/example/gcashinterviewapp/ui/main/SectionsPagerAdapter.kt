@@ -7,21 +7,31 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.example.gcashinterviewapp.R
 
 private val TAB_TITLES = arrayOf(
-    R.string.tab_text_1,
-    R.string.tab_text_2
+    R.string.tab_current,
+    R.string.tab_weather_list
 )
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
-    FragmentPagerAdapter(fm) {
+class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) : FragmentPagerAdapter(fm) {
+
+    private  var currentWeatherFragment: CurrentWeatherFragment? = null
+    private  var weatherListFragment: WeatherListFragment? = null
 
     override fun getItem(position: Int): Fragment {
-        // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
-        return PlaceholderFragment.newInstance(position + 1)
+        if(position == 0){
+            if(currentWeatherFragment == null){
+                currentWeatherFragment = CurrentWeatherFragment.newInstance()
+            }
+            return currentWeatherFragment as CurrentWeatherFragment
+        }else{
+            if(weatherListFragment == null){
+                weatherListFragment = WeatherListFragment.newInstance()
+            }
+            return weatherListFragment as WeatherListFragment
+        }
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

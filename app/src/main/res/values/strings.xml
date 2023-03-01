@@ -2,4 +2,17 @@
     <string name="app_name">GcashInterviewApp</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+
+    <string name="tab_current">Current</string>
+    <string name="tab_weather_list">Weather List</string>
+    <string name="api_key">1b5232da0bd907bce4d03449e871be86</string>
+
+    <string name="permission_rationale">Location permission needed for core functionality</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core functionality.</string>
+    <string name="settings">Settings</string>
+    <string name="ok">OK</string>
+    <string name="gps_not_found">GPS not found</string>
+    <string name="want_to_enable">Want to enable?</string>
+    <string name="enable_now">Enable Now</string>
+
 </resources>
