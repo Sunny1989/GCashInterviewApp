@@ -13,7 +13,7 @@ interface WeatherDAO {
     @Insert(onConflict = REPLACE)
     fun addWeatherDetails(weatherItem: WeatherItem)
 
-    @Query("Select * from WeatherItem")
+    @Query("Select * from WeatherItem order by id desc")
     suspend fun getWeatherDetails(): List<WeatherItem>
 }
 

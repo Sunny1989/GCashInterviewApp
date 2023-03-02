@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.gcashinterviewapp.GCashApplication
+import com.example.gcashinterviewapp.MainActivity
 import com.example.gcashinterviewapp.databinding.FragmentCurrentWeatherBinding
 import com.example.gcashinterviewapp.repository.Response
 import com.example.gcashinterviewapp.viewmodel.AbstractViewModelFactory
@@ -17,13 +18,10 @@ import javax.inject.Inject
 class CurrentWeatherFragment : Fragment(){
     private lateinit var binding: FragmentCurrentWeatherBinding
 
-    private lateinit var weatherVM: WeatherVM
+    private var weatherVM: WeatherVM? = null
 
     @Inject
     lateinit var abstractViewModelFactory: AbstractViewModelFactory
-
-    //private var lat : Double? = null
-    //private var lon : Double? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,9 +32,8 @@ class CurrentWeatherFragment : Fragment(){
         val weatherComponent = (activity?.application as GCashApplication)
             .appComponent.getWeatherComponent()
         weatherComponent.injectWeatherFragment(this)
-        //productsViewModel = ViewModelProvider(this, productVMFactory)[ProductsViewModel::class.java]
         weatherVM = ViewModelProvider(this, abstractViewModelFactory)[WeatherVM::class.java]
-        weatherVM.weatherLiveData.observe(viewLifecycleOwner) {
+        weatherVM!!.weatherLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is Response.Success -> {
                     binding.weatherItem = it.data1
@@ -51,22 +48,19 @@ class CurrentWeatherFragment : Fragment(){
             }
 
         }
-        //callWeatherApi(lat,lon, getString(R.string.api_key))
+
+        binding.container.setOnRefreshListener {
+            binding.container.isRefreshing = false
+            (activity as MainActivity).checkAndCallLocation()
+        }
         return binding.root
     }
 
-    /*fun set(lat: Double?,lon: Double?){
-        this.lat = lat
-        this.lon = lon
-        if(isAdded){
-            callWeatherApi(lat,lon, getString(R.string.api_key))
-        }
-    }*/
-
     fun callWeatherApi(lat: Double?, lon: Double?, apiKey: String){
-        lat?.let { lon?.let { it1 -> weatherVM.callWeatherDetails(it, it1,apiKey) } }
+        if(weatherVM != null) {
+            lat?.let { lon?.let { it1 -> weatherVM!!.callWeatherDetails(it, it1, apiKey) } }
+        }
     }
-
 
     companion object {
         /**
